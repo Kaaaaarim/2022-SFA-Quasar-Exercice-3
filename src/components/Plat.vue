@@ -34,6 +34,7 @@
       color="blue"
       flat>Modifier</q-btn>
     <q-btn
+      @click="confirmationSuppressionPlat(plat.id)"
       icon="delete"
       color="red"
       flat>Supprimer</q-btn>
@@ -47,6 +48,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   props: ['plat'],
   data () {
@@ -56,6 +59,19 @@ export default {
   },
   components: {
     'form-plat': require('components/FormPlat.vue').default
+  },
+  methods: {
+    confirmationSuppressionPlat (id) {
+      this.$q.dialog({
+        title: 'Confirmation',
+        message: 'Voulez-vous vraiment supprimer ce plat?',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        this.supprimerPlat(id)
+      })
+    },
+    ...mapActions('plats', ['supprimerPlat'])
   }
 }
 </script>
