@@ -42,6 +42,19 @@ const mutations = {
     // Filtre les données du tableau
     // et garde les plats dont l'id est différent de celui à supprimer
     state.plats = state.plats.filter(el => el.id !== id)
+  },
+  ajouterPlat (state, plat) {
+    // Ajout du plat à fin du tableau
+    state.plats.push(plat)
+  },
+  modifierPlat (state, payload) {
+    // Recherche la tâche et retourne sa position dans le tableau, son index
+    const index = state.plats.findIndex(el => el.id === payload.id)
+    // Si une tâche a été trouvée
+    if (index !== -1) {
+      // Modifie l'objet trouvé avec les nouvelles valeurs
+      Object.assign(state.plats[index], payload.updates)
+    }
   }
 }
 /*
@@ -52,6 +65,24 @@ const actions = {
   // Supprime un plat
   supprimerPlat ({ commit }, id) {
     commit('supprimerPlat', id)
+  },
+  // Ajoute un plat
+  ajouterPlat ({ commit }, plat) {
+    let uId = 1
+    // Si le tableau n'est pas vide
+    if (state.plats.length) {
+      // Récupère l'id du dernier élément du tableau
+      uId = state.plats[state.plats.length - 1].id + 1
+    }
+    // Ajoute l'id au plat
+    plat.id = uId
+    // Ajoute le plat au magasin
+    commit('ajouterPlat', plat)
+  },
+  // Modifie un plat
+  modifierPlat ({ commit }, payload) {
+    // Valide la mutation et y passe les données
+    commit('modifierPlat', payload)
   }
 }
 

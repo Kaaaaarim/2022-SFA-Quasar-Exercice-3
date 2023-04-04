@@ -15,17 +15,17 @@ Exercice 3 - Vuex & Formulaires
 4) Ajouter une validation au formulaire src/components/FormPlat.vue
      - nom: obligatoire avec un maximum de 20 caractères.
      - description: maximum de 155 caractères.
-     - La validation doit être déclenchée lorsque l'on clique sur Sauvegarder
+     - La validation doit être déclenchée lorsque l'on clique sur Sauvegarder $
 
 5) Ajouter la possibilité d'ajouter un élément
-   indice: utiliser l'attribut "action" pour différencier l'ajout de la modification
+   indice: utiliser l'attribut "action" pour différencier l'ajout de la modification $
 
-6) Ajouter la possibilité de modifier un élément
+6) Ajouter la possibilité de modifier un élément $
 
 7) Si aucune description n'est fournie pour un plat,
-   afficher le texte "Aucune description fournie" en italique
+   afficher le texte "Aucune description fournie" en italique $
 
-8) Si aucune image n'est fournie, utiliser l'image statics/image-placeholder.png
+8) Si aucune image n'est fournie, utiliser l'image statics/image-placeholder.png (Probleme, revoir plus tard)
 
 -->
 <q-page class="q-pa-lg">
@@ -40,8 +40,10 @@ Exercice 3 - Vuex & Formulaires
       @click="afficherFormPlat = true" />
 
     <q-dialog
-      v-model="afficherFormPlat">
-      <form-plat action="ajouter" />
+      v-model="afficherFormPlat"
+      persistent
+    >
+      <form-plat action="ajouter"/>
     </q-dialog>
 
   </div>
