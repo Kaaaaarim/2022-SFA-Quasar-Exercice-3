@@ -15,7 +15,10 @@
             v-model="plat.nom"
             label="Nom (Burger)"
             class="col"
-            :rules="[val => !!val || 'Le nom est obligatoire', val => (val && val.length <= 20) || 'Le nom doit comporter au maximum 20 caractères']"
+            :rules="[
+              val => !!val || 'Le nom est obligatoire',
+              val => (val && val.length <= 20) || 'Le nom doit comporter au maximum 20 caractères'
+              ]"
           />
         </div>
 
@@ -26,7 +29,9 @@
             label="Description"
             type="textarea"
             class="col"
-            :rules="[val => !val || val.length <= 155 || 'La description ne peut pas contenir plus de 155 caractères']"
+            :rules="[
+              val => !val || val.length <= 155 || 'La description ne peut pas contenir plus de 155 caractères'
+              ]"
           />
         </div>
 
@@ -75,15 +80,7 @@
 import { mapActions } from 'vuex'
 
 export default {
-  props: {
-    action: {
-      type: String,
-      required: true
-    },
-    platAModifier: {
-      type: Object
-    }
-  },
+  props: ['action', 'platAModifier'],
   data () {
     return {
       plat: {
@@ -96,24 +93,24 @@ export default {
   },
   methods: {
     ...mapActions('plats', ['ajouterPlat', 'modifierPlat']),
-    // Envois le formulaire.
-    // En fontion de l'action, on appelle la bonne méthode du store.
+
+    /**
+     * Fonction qui gère la soumission du formulaire en fonction de l'action
+     */
     formSubmit () {
-      console.log('Plat: ' + this.plat)
-      // Si le plat a un id, c'est une modification sinon ajout
+      // Vérification de l'action
       if (this.action === 'modifier') {
         // Construction du payload
         const payload = {
           id: this.plat.id,
           updates: this.plat // Passe toutes les proprités de le plat actuelle
         }
-        // Appel l'action modifierTache et lui passe le payload
+        // Appel l'action modifierPlat et lui passe le payload
         this.modifierPlat(payload)
       } else {
-        // Appel l'action ajouterTache et lui passe le plat
+        // Appel l'action ajouterPlat et lui passe le plat
         this.ajouterPlat(this.plat)
       }
-
       // Demande la fermeture de la dialog au parent
       this.$emit('fermer')
     }
