@@ -4,11 +4,8 @@
       <div class="text-h6 heading">{{ action }} Plat</div>
     </q-card-section>
 
-    <q-form
-      @submit="formSubmit"
-    >
+    <q-form ref="form" @submit.prevent="validateForm(plat)">
       <q-card-section>
-
         <div class="row q-mb-md">
           <q-input
             filled
@@ -42,7 +39,7 @@
             label="URL de l'image"
             class="col" />
           <q-img
-            :src="plat.image ? plat.image : 'src/assets/images/image-placeholder.png'"
+            :src="plat.image ? plat.image : 'images/image-placeholder.png'"
             class="q-ml-sm"
             contain />
         </div>
@@ -111,45 +108,63 @@ export default {
         // Appel l'action ajouterPlat et lui passe le plat
         this.ajouterPlat(this.plat)
       }
-      // Demande la fermeture de la dialog au parent
-      this.$emit('fermer')
+      this.$emit('close')
+    },
+    validateForm (plat) {
+      // Vérifier la validité du champ "nom"
+      const nomValid = !!plat.nom && plat.nom.length <= 20
+      // Vérifier la validité du champ "description"
+      const descriptionValid = !plat.description || plat.description.length <= 155
+      // Si les champs sont valides, appel la fonction formSubmit
+      if (nomValid && descriptionValid) {
+        this.formSubmit()
+      } else {
+        // Affiche un message d'erreur
+        this.$q.notify({
+          message: 'Veuillez vérifier les champs du formulaire',
+          color: 'negative',
+          icon: 'warning'
+        })
+        // Reste sur la page
+        return false
+      }
     }
   },
   mounted () {
     if (this.platAModifier) {
       // Copie les propriétés de platAModifier dans un nouvel objet vide
-      this.plat = Object.assign({}, this.platAModifier)
+      this.plat = structuredClone(this.platAModifier)
     }
   }
 }
 </script>
 
-<style>
-.form-card {
-  min-width: 400px;
-}
-.form-card .heading {
-  text-transform: capitalize;
-}
-.form-card .q-card-section {
-  width: 100%;
-}
-.thumbnail {
-  max-width: 50px;
-  max-height: 50px;
-}
-.form-card .q-img {
-  height: 56px;
-  width: 56px;
-  border-radius: 10px;
-}
-.form-card .q-img__image {
-  background-size: cover !important;
-}
-.form-card .q-rating__icon {
-  opacity: 0.2;
-}
-.form-card .q-rating__icon--active {
-  opacity: 1;
-}
+<style scoped lang="sass">
+.form-card
+  min-width: 400px
+
+.form-card .heading
+  text-transform: capitalize
+
+.form-card .q-card-section
+  width: 100%
+
+.thumbnail
+  max-width: 50px
+  max-height: 50px
+
+.form-card .q-img
+  height: 56px
+  width: 56px
+  border-radius: 10px
+
+.form-card .q-img__image
+  background-size: cover !important
+
+.form-card .q-rating__icon
+  opacity: 0.2
+
+.form-card .q-rating__icon--active
+  opacity: 1
+
 </style>

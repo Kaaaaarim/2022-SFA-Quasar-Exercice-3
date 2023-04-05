@@ -29,6 +29,13 @@ const state = {
       nom: 'BBQ Ribs',
       description: 'Les BBQ ribs ou barbecue ribs sont des grands classiques très appréciés partout dans le monde.',
       note: 5
+    },
+    {
+      id: 5,
+      image: '',
+      nom: 'Société',
+      description: '',
+      note: 0
     }
   ]
 }
@@ -93,7 +100,7 @@ Sert à calculer, trier, filtrer ou formater les donneés
  */
 const getters = {
   plats: (state) => {
-    return state.plats
+    return [...state.plats].sort((a, b) => a.nom.localeCompare(b.nom, 'fr'))
   }
 }
 

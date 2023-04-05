@@ -2,7 +2,7 @@
 <q-card
   class="card">
   <q-img
-    :src="plat.image ? plat.image : 'public/images/image-placeholder.png'"
+    :src="plat.image ? plat.image : 'images/image-placeholder.png'"
     basic
     contain
   >
@@ -91,32 +91,32 @@ export default {
 }
 </script>
 
-<style>
-.card {
-  min-height: 400px;
-  max-width: 250px;
-  width: 250px;
-  transition: background 0.3s;
-}
-.card-clickable {
-  cursor: pointer;
-}
-.card-clickable:hover {
-  background: #bdbdbd!important;
-}
-.card .q-img {
-  max-height: 180px;
-}
-.card .q-img__image {
-  background-size: cover !important;
-}
-.card .q-rating__icon {
-  opacity: 0.2;
-}
-.card .q-rating__icon--active {
-  opacity: 1;
-}
-.card .description {
-  padding: 5px 16px;
-}
+<style lang="sass">
+.card
+  min-height: 400px
+  max-width: 250px
+  width: 250px
+  transition: background 0.3s
+
+.card-clickable
+  cursor: pointer
+
+.card-clickable:hover
+  background: #bdbdbd!important
+
+.card .q-img
+  max-height: 180px
+
+.card .q-img__image
+  background-size: cover !important
+
+.card .q-rating__icon
+  opacity: 0.2
+
+.card .q-rating__icon--active
+  opacity: 1
+
+.card .description
+  padding: 5px 16px
+
 </style>
