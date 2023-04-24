@@ -3,8 +3,6 @@
     <q-card-section>
       <div class="text-h6 heading">{{ action }} Plat</div>
     </q-card-section>
-
-    <q-form ref="form" @submit.prevent="validateForm(plat)">
       <q-card-section>
         <div class="row q-mb-md">
           <q-input
@@ -65,11 +63,10 @@
           v-close-popup />
         <q-btn
           label="Sauver"
+          @click="validateForm(plat)"
           color="primary"
-          v-close-popup
           type="submit"/>
       </q-card-actions>
-    </q-form>
   </q-card>
 </template>
 
@@ -120,6 +117,7 @@ export default {
         this.formSubmit()
       } else {
         // Affiche un message d'erreur
+        console.log('Veuillez vérifier les champs du formulaire')
         this.$q.notify({
           message: 'Veuillez vérifier les champs du formulaire',
           color: 'negative',

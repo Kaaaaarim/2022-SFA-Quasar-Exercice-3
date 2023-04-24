@@ -1,4 +1,6 @@
 // State : données du magasin
+import { uid } from 'quasar'
+
 const state = {
   plats: [
     {
@@ -45,16 +47,16 @@ Mutations : méthode qui manipulent les données
 Les mutations ne peuvent pas être asynchrones !!!
  */
 const mutations = {
-  supprimerPlat (state, id) {
+  SUPPRIMER_PLAT (state, id) {
     // Filtre les données du tableau
     // et garde les plats dont l'id est différent de celui à supprimer
     state.plats = state.plats.filter(el => el.id !== id)
   },
-  ajouterPlat (state, plat) {
+  AJOUTER_PLAT (state, plat) {
     // Ajout du plat à fin du tableau
     state.plats.push(plat)
   },
-  modifierPlat (state, payload) {
+  MODIFIER_PLAT (state, payload) {
     // Recherche la tâche et retourne sa position dans le tableau, son index
     const index = state.plats.findIndex(el => el.id === payload.id)
     // Si une tâche a été trouvée
@@ -71,11 +73,11 @@ Elles peuvent être asynchrones !
 const actions = {
   // Supprime un plat
   supprimerPlat ({ commit }, id) {
-    commit('supprimerPlat', id)
+    commit('SUPPRIMER_PLAT', id)
   },
   // Ajoute un plat
   ajouterPlat ({ commit }, plat) {
-    let uId = 1
+    let uId = uid()
     // Si le tableau n'est pas vide
     if (state.plats.length) {
       // Récupère l'id du dernier élément du tableau
@@ -84,12 +86,12 @@ const actions = {
     // Ajoute l'id au plat
     plat.id = uId
     // Ajoute le plat au magasin
-    commit('ajouterPlat', plat)
+    commit('AJOUTER_PLAT', plat)
   },
   // Modifie un plat
   modifierPlat ({ commit }, payload) {
     // Valide la mutation et y passe les données
-    commit('modifierPlat', payload)
+    commit('MODIFIER_PLAT', payload)
   }
 }
 
