@@ -1,4 +1,6 @@
 import { api } from 'boot/axios'
+import { afficherMessageErreur } from 'src/fonctions/message-erreur'
+import { Loading } from 'quasar'
 
 // State : données du magasin
 const state = {
@@ -11,10 +13,10 @@ Mutations : méthode qui manipulent les données
 Les mutations ne peuvent pas être asynchrones !!!
  */
 const mutations = {
-  SET_USER (state, user) {
+  setUser (state, user) {
     state.user = user
   },
-  SET_TOKEN (state, token) {
+  setToken (state, token) {
     state.token = token
   }
 }
@@ -24,21 +26,42 @@ Actions : méthodes du magasin qui font appel aux mutations
 Elles peuvent être asynchrones !
  */
 const actions = {
-  enregistrerUtilisateur ({ commit }, payload) {
-    const that = this
-    console.log('Payload', payload)
+  enregistrerUtilisateur ({ commit, dispatch }, payload) {
+    Loading.show()
     api.post('/register', payload)
       .then(function (response) {
-        commit('SET_USER', response.data.user)
-        commit('SET_TOKEN', response.data.access_token)
-        console.log('Utilisateur enregistré')
-        console.log('Reponse.data', response.data)
-        console.log('State', state)
-        that.$router.push('/')
+        dispatch('setUser', response.data)
       })
       .catch(function (error) {
-        console.log(error.response)
+        Loading.hide()
+        afficherMessageErreur(
+          'Création du compte impossible !',
+          Object.values(error.response.data)
+        )
+        throw error
       })
+  },
+  connecterUtilisateur ({ commit, dispatch }, payload) {
+    Loading.show()
+    api.post('/login', payload)
+      .then(function (response) {
+        dispatch('setUser', response.data)
+        console.log('utilisateur connecté !')
+      })
+      .catch(function (error) {
+        Loading.hide()
+        afficherMessageErreur(
+          'Connexion impossible !',
+          Object.values(error.response.data)
+        )
+        throw error
+      })
+  },
+  setUser ({ commit, dispatch }, data) {
+    commit('setUser', data.user)
+    commit('setToken', data.access_token)
+    this.$router.push('/')
+    Loading.hide()
   }
 }
 
