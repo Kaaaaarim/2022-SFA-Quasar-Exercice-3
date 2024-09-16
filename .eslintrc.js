@@ -56,7 +56,7 @@ module.exports = {
     'vue/multi-word-component-names': 'off',
     // allow async-await
     'generator-star-spacing': 'off',
-    // allow paren-less arrow functions
+    // allow paren-less arrow fonctions
     'arrow-parens': 'off',
     'one-var': 'off',
     'no-void': 'off',

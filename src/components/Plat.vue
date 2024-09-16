@@ -2,7 +2,7 @@
 <q-card
   class="card">
   <q-img
-    :src="plat.image"
+    :src="plat.image ? plat.image : 'images/image-placeholder.png'"
     basic
     contain
   >
@@ -21,8 +21,12 @@
     />
   </q-card-section>
 
-  <q-card-section class="description">
-    {{ plat.description }}
+<!--  Affiche la descritpion du plat, sinon, affiche un texte de remplacement-->
+  <q-card-section class="description" v-if="plat.description">
+    <p v-if="plat.description">{{ plat.description }}</p>
+  </q-card-section>
+  <q-card-section class="description, text-italic" v-else>
+    Aucune description fournie
   </q-card-section>
 
   <q-card-actions
@@ -34,6 +38,7 @@
       color="blue"
       flat>Modifier</q-btn>
     <q-btn
+      @click="confirmationSuppressionPlat(plat.id)"
       icon="delete"
       color="red"
       flat>Supprimer</q-btn>
@@ -41,12 +46,14 @@
 
   <q-dialog
     v-model="afficherFormPlat">
-    <form-plat action="modifier" />
+    <form-plat action="modifier" :plat-a-modifier="plat"/>
   </q-dialog>
 </q-card>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   props: ['plat'],
   data () {
@@ -56,36 +63,60 @@ export default {
   },
   components: {
     'form-plat': require('components/FormPlat.vue').default
+  },
+  methods: {
+    /**
+     * Affiche une boîte de dialogue de confirmation avant de supprimer un plat
+     * @param id L'id du plat à supprimer
+     */
+    confirmationSuppressionPlat (id) {
+      this.$q.dialog({
+        title: 'Confirmation',
+        message: 'Voulez-vous vraiment supprimer ce plat?',
+        persistent: true,
+        ok: {
+          label: 'Supprimer',
+          color: 'red'
+        },
+        cancel: {
+          label: 'Annuler',
+          color: 'grey-8'
+        }
+      }).onOk(() => {
+        this.supprimerPlat(id)
+      })
+    },
+    ...mapActions('plats', ['supprimerPlat', 'modifierPlat'])
   }
 }
 </script>
 
-<style>
-.card {
-  min-height: 400px;
-  max-width: 250px;
-  width: 250px;
-  transition: background 0.3s;
-}
-.card-clickable {
-  cursor: pointer;
-}
-.card-clickable:hover {
-  background: #bdbdbd!important;
-}
-.card .q-img {
-  max-height: 180px;
-}
-.card .q-img__image {
-  background-size: cover !important;
-}
-.card .q-rating__icon {
-  opacity: 0.2;
-}
-.card .q-rating__icon--active {
-  opacity: 1;
-}
-.card .description {
-  padding: 5px 16px;
-}
+<style lang="sass">
+.card
+  min-height: 400px
+  max-width: 250px
+  width: 250px
+  transition: background 0.3s
+
+.card-clickable
+  cursor: pointer
+
+.card-clickable:hover
+  background: #bdbdbd!important
+
+.card .q-img
+  max-height: 180px
+
+.card .q-img__image
+  background-size: cover !important
+
+.card .q-rating__icon
+  opacity: 0.2
+
+.card .q-rating__icon--active
+  opacity: 1
+
+.card .description
+  padding: 5px 16px
+
 </style>

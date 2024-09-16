@@ -42,6 +42,14 @@
             <q-item-label>Solution</q-item-label>
           </q-item-section>
         </q-item>
+        <q-item clickable to="/connexion" exact>
+          <q-item-section avatar>
+            <q-icon name="login" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Se connecter</q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
